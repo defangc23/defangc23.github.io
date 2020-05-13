@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on Fang Blog</title>
+    <link>https://defangc23.github.io/about/</link>
+    <description>Recent content in Abouts on Fang Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://defangc23.github.io/about/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About me</title>
+      <link>https://defangc23.github.io/about/about/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://defangc23.github.io/about/about/</guid>
+      <description>profile Experienced user of advanced AI techniques including Deep/Machine Learning, Computer Vision. High level of practical distributed computation skills targeting local multi-GPU processing and cloud solution in AWS/GCP. Accurately convey the information and reliably deliver the results to the customers such as Microsoft and Disney. Always looking for more creative and efficient way to address the issue. An advocate for tech sharing and grateful for people inspired me. Confident in</description>
+    </item>
+    
+  </channel>
+</rss>
