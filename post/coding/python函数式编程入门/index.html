@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="[ F ]ang Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://defangc23.github.io/background/star_war.jpg">
+    <meta property="twitter:image" content="https://defangc23.github.io/background/star_war.jpg" />
+    
+
+    
+    <meta name="title" content="Functional Programming with Python" />
+    <meta property="og:title" content="Functional Programming with Python" />
+    <meta property="twitter:title" content="Functional Programming with Python" />
+    
+
+    
+    <meta name="description" content="python函数式编程入门">
+    <meta property="og:description" content="python函数式编程入门" />
+    <meta property="twitter:description" content="python函数式编程入门" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Functional Programming with Python-</title>
+
+    <link rel="canonical" href="/post/coding/python%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">home</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    
+                        
+                        <li>
+                            <a href="/categories/coding">coding</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/about/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/background/star_war.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/python" title="python">
+                            python
+                        </a>
+                        
+                    </div>
+                    <h1>Functional Programming with Python</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            Fang
+                         
+                        on 
+                        Saturday, May 16, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="chapter-1-思维与直觉">Chapter 1. 思维与直觉</h2>
+<p>函数式编程(FP)是一种编程范式，也就是一种编程思维。入门的开始，我会初探一些理论概念但不做深究。因为自己多多少少距离完全理解一些晦涩的学术概念一定是有知识断层的，所以作为初学者培养思维与直觉尤为重要。</p>
+<p>先抛开对语言特性下所支持的具体功能依赖来讲FP本质的思维与特点：</p>
+<ol>
+<li>
+<p><strong>函数作为第一类对象</strong></p>
+<p>指的是函数与其他数据类型一样，处于相同的地位。函数可以分配给变量，储存在数据结构中，也可以作为参数传递给另一个函数，甚至可以作为其他函数的返回值。在FP中，函数成为了系统的基本组成，会被当作流水线上的每个部件去组合和传递。</p>
+</li>
+<li>
+<p><strong>表达式作为第一逻辑</strong></p>
+<p>这里指的是一种思维方式。“表达式” (expression) 是一个纯粹的运算规则并且有输入和输出，而常见的面向过程的命令式编程是通过“语句与赋值”(statement&amp;assigment)来思维并传递，把单一数据当成第一对象直接操作，而其中的语句更多的是逻辑判断，并且没有返回值。函数式编程的风格是直接用表达式作为输入的规则去操作持有数据的容器，直接组合生成器表达式来描述处理流程，或者构造高阶函数和过滤函数来返回更复杂的可迭代对象。</p>
+</li>
+<li>
+<p><strong>行为与数据分离</strong></p>
+<p>这也是与面向对象编程的不同点，FP偏向于用动词来描述和抽象世界，数据是静止态等待着被批量处理，而处理的行为就是我们用函数来组合的规则。其次分离的是数据的状态，这样的好处就是没有“副作用”，也就是说函数的运行至依赖于其输入参数不依赖和修改外部的状态（引用透明），输入确定，输出也就确定。不过这里不必过度在意一些无足轻重的“副作用”，比如日志打印，读取缓存。世间万物皆变，完美无副作用的百分百纯函数场景其实不够实际。</p>
+</li>
+</ol>
+<h2 id="chapter-2--python中的fp基本要点">Chapter 2.  Python中的FP基本要点</h2>
+<p>如何在Python中高效的运用函数式编程，掌握下面的要点和特性非常重要。结合第一章节对FP直觉上的认识，这一节我们会举一些入门的小例子去具体的说明python的FP实现。</p>
+<h3 id="21--第一类对象">2.1  第一类对象</h3>
+<h4 id="211--函数是对象">2.1.1  函数是对象</h4>
+<p>首先，python程序中所有的数据都由对象表示。列表，字典，字符串和模块等都是对象，python中的函数也不例外。</p>
+<p>这里是一个简单函数:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># Rap about it</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">rap</span>(text):
+  	<span style="color:#ff79c6">print</span>(text)
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> rap(<span style="color:#f1fa8c">&#34;yellow&#34;</span>)
+yellow
+</code></pre></div><p>再来看看下面的rap这个函数的属性, 其拥有对象模型的通用属性：id, 类型, 值。而且<code>rap</code>创建的底层函数对象<code>&lt;function rap at 0x10d544c80&gt;</code>和其define的名称rap是相互独立的实体，<code>__name __</code>属性是python在创建底层函数对象时直接将这个函数define的名称记录下来作为了用于调试的字符串标识。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#8be9fd;font-style:italic">id</span>(rap)
+<span style="color:#bd93f9">4518595712</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#8be9fd;font-style:italic">type</span>(rap)
+<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">&#39;function&#39;</span><span style="color:#ff79c6">&gt;</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> rap
+<span style="color:#ff79c6">&lt;</span>function rap at <span style="color:#bd93f9">0x10d544c80</span><span style="color:#ff79c6">&gt;</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#8be9fd;font-style:italic">dir</span>(rap)
+[<span style="color:#f1fa8c">&#39;__call__&#39;</span>, <span style="color:#f1fa8c">&#39;__class__&#39;</span>, <span style="color:#f1fa8c">&#39;__closure__&#39;</span>, <span style="color:#f1fa8c">&#39;__code__&#39;</span>, <span style="color:#f1fa8c">&#39;__defaults__&#39;</span>, <span style="color:#f1fa8c">&#39;__delattr__&#39;</span>, <span style="color:#f1fa8c">&#39;__dict__&#39;</span>, <span style="color:#f1fa8c">&#39;__doc__&#39;</span>, <span style="color:#f1fa8c">&#39;__format__&#39;</span>, <span style="color:#f1fa8c">&#39;__get__&#39;</span>, <span style="color:#f1fa8c">&#39;__getattribute__&#39;</span>, <span style="color:#f1fa8c">&#39;__globals__&#39;</span>, <span style="color:#f1fa8c">&#39;__hash__&#39;</span>, <span style="color:#f1fa8c">&#39;__init__&#39;</span>, <span style="color:#f1fa8c">&#39;__module__&#39;</span>, <span style="color:#f1fa8c">&#39;__name__&#39;</span>, <span style="color:#f1fa8c">&#39;__new__&#39;</span>, <span style="color:#f1fa8c">&#39;__reduce__&#39;</span>, <span style="color:#f1fa8c">&#39;__reduce_ex__&#39;</span>, <span style="color:#f1fa8c">&#39;__repr__&#39;</span>, <span style="color:#f1fa8c">&#39;__setattr__&#39;</span>, <span style="color:#f1fa8c">&#39;__sizeof__&#39;</span>, <span style="color:#f1fa8c">&#39;__str__&#39;</span>, <span style="color:#f1fa8c">&#39;__subclasshook__&#39;</span>, <span style="color:#f1fa8c">&#39;func_closure&#39;</span>, <span style="color:#f1fa8c">&#39;func_code&#39;</span>, <span style="color:#f1fa8c">&#39;func_defaults&#39;</span>, <span style="color:#f1fa8c">&#39;func_dict&#39;</span>, <span style="color:#f1fa8c">&#39;func_doc&#39;</span>, <span style="color:#f1fa8c">&#39;func_globals&#39;</span>, <span style="color:#f1fa8c">&#39;func_name&#39;</span>]
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> rap<span style="color:#ff79c6">.</span>__name__
+<span style="color:#f1fa8c">&#39;rap&#39;</span>
+</code></pre></div><p>如其他对象一样，可以把这个函数赋值给一个变量。然后观察一下性质。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> read <span style="color:#ff79c6">=</span> rap
+</code></pre></div><p>这一行没有调用函数，只是获取<code>rap</code>引用的底层函数对象并指向了另一个名称为<code>read</code>的变量，调用read可执行相同的底层函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> read(<span style="color:#f1fa8c">&#34;yellow&#34;</span>)
+yellow
+</code></pre></div><p>通过查看read这一变量的性质：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#8be9fd;font-style:italic">id</span>(read)
+<span style="color:#bd93f9">4518595712</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#8be9fd;font-style:italic">type</span>(read)
+<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">&#39;function&#39;</span><span style="color:#ff79c6">&gt;</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> read
+<span style="color:#ff79c6">&lt;</span>function rap at <span style="color:#bd93f9">0x10d544c80</span><span style="color:#ff79c6">&gt;</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> read<span style="color:#ff79c6">.</span>__name__
+<span style="color:#f1fa8c">&#39;rap&#39;</span>
+</code></pre></div><p>从而发现函数赋值给另一变量，作用仅仅给底层的函数对象绑了另一个名称，关系如同下图</p>
+<p><img src="/post_figure/1_1.jpg" alt=""></p>
+<p>如果在赋值完后删除该函数的原始名称：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> <span style="color:#ff79c6">del</span> rap
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> rap(<span style="color:#f1fa8c">&#34;yellow&#34;</span>)
+Traceback (most recent call last):
+  File <span style="color:#f1fa8c">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#bd93f9">1</span>, <span style="color:#ff79c6">in</span> <span style="color:#ff79c6">&lt;</span>module<span style="color:#ff79c6">&gt;</span>
+NameError: name <span style="color:#f1fa8c">&#39;rap&#39;</span> <span style="color:#ff79c6">is</span> <span style="color:#ff79c6">not</span> defined
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> read(<span style="color:#f1fa8c">&#34;yellow&#34;</span>)
+yellow
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> read<span style="color:#ff79c6">.</span>__name__
+<span style="color:#f1fa8c">&#39;rap&#39;</span>
+</code></pre></div><p>可以看出<code>rap</code>这个名称已经无法访问函数的底层对象，但仍能通过<code>read</code>调用该函数，即便<code>read.__name__</code> 仍是“rap”。所以，指向函数的变量名称和底层函数本身是彼此独立的。</p>
+<h4 id="212--函数可储存在数据结构中">2.1.2  函数可储存在数据结构中</h4>
+<p>由于函数为一类对象，所以如其他对象一样可以存储于数据结构之中，如 (list, dict, set 等)。这里我们用list和dict举例。</p>
+<p><em><strong>List</strong></em></p>
+<p>有一些函数，他们输入的数据可能是相同相似的，但函数本身，也就是对数据的处理逻辑各不相同。这一点和观察者模式很相似：</p>
+<p>某一个简易热水装置，在烧水的过程中我们希望添加一些报警器，比如水烧到40度是一个合适的冲婴儿奶粉的温度，到60度是一个洗澡水温度，到90度是一个泡茶水温度。那么这三种水温都可以分别构造一个报警器函数，类似于：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> 奶粉Alarm(temperature):
+	<span style="color:#ff79c6">if</span> temperature <span style="color:#ff79c6">==</span> <span style="color:#bd93f9">40</span>:
+		<span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#34;可以冲奶粉啦！&#34;</span>)
+</code></pre></div><p>我们可以把所有报警器放置于容器中：</p>
+<pre><code>alarm_list = [奶粉Alarm, 洗澡Alarm, 泡茶Alarm]
+</code></pre><p>之后可以直接将温度传感器的值 T 传入函数即可：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">for</span> alarm <span style="color:#ff79c6">in</span> alarm_list:
+	alarm(T)
+</code></pre></div><p>在这里的for循环不够函数式，只方便理解，后续会做更深入的补充。</p>
+<p><em><strong>Dict</strong></em></p>
+<p>将函数存放于dict中便于构造工厂函数，如同简单工厂模式一样，专门定义一个类来根据参数创建不同类的实例，用Dict构造函数工厂是可以将key作为参数，用value来返回具体的产品类型函数。例如把不同的图像变换函数如rotate, resize放在一个函数中:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">image_factory</span>(method):
+	op_dict <span style="color:#ff79c6">=</span> {<span style="color:#f1fa8c">&#34;rotate&#34;</span>: rotate,
+	 		   <span style="color:#f1fa8c">&#34;resize&#34;</span>: resize}
+	<span style="color:#ff79c6">return</span> op_dict[method]
+</code></pre></div><h4 id="213--函数可以作为参数和返回值">2.1.3  函数可以作为参数和返回值</h4>
+<p>函数除了可以赋值给变量并保存在多种数据结构中，还可以作为参数和返回值。这些性质可以高效的构造高阶函数。比如可以围绕可调用类来构造高阶函数。这样做的好处是对象和可以更充分的使用python语句并且在创建高阶函数时进行静态配置：</p>
+<p><!-- raw HTML omitted -->Case 1<!-- raw HTML omitted --></p>
+<p>利用策略模式定义<code>__init__()</code>方法，动态注入另一个策略函数为其提供的算法，从而改变本对象的运行逻辑。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">calc</span>:
+    <span style="color:#ff79c6">def</span> __init__(self, algorithm):
+        self<span style="color:#ff79c6">.</span>strategy <span style="color:#ff79c6">=</span> algorithm
+    <span style="color:#ff79c6">def</span> __call__(arg):
+        <span style="color:#ff79c6">return</span> self<span style="color:#ff79c6">.</span>strategy(arg)
+</code></pre></div><p>在声明调用类对象时使用了<code>__call__()</code>方法，实际上定义了一个以函数为返回值的函数以便后续使用，比如这里在构建calc时输入和输出都可以认为是函数。</p>
+<p><!-- raw HTML omitted -->Case 2<!-- raw HTML omitted --></p>
+<p>在Tensorflow中构造神经网络时，我们常用框架中提供的Layer类为自定义网络类提供算法，在自定义网络类初始化的过程中传入并确定神经网络的初始化参数，之后在动态注入输入矩阵时完成惰性求值，得到网络的最终输出。下面节选一段Faster-RCNN中构造Bottleneck的代码作为例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> tensorflow.keras <span style="color:#ff79c6">import</span> layers
+
+<span style="color:#ff79c6">class</span> <span style="color:#50fa7b">_Bottleneck</span>(tf<span style="color:#ff79c6">.</span>keras<span style="color:#ff79c6">.</span>Model):
+    <span style="color:#ff79c6">def</span> __init__(self, filters, block, downsampling<span style="color:#ff79c6">=</span>False, stride<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, <span style="color:#ff79c6">**</span>kwargs):
+        <span style="color:#8be9fd;font-style:italic">super</span>(_Bottleneck, self)<span style="color:#ff79c6">.</span>__init__(<span style="color:#ff79c6">**</span>kwargs)
+        self<span style="color:#ff79c6">.</span>conv2a <span style="color:#ff79c6">=</span> layers<span style="color:#ff79c6">.</span>Conv2D(filters1, (<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">1</span>), strides<span style="color:#ff79c6">=</span>(stride, stride),
+                                    kernel_initializer<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;he_normal&#39;</span>,
+                                    name<span style="color:#ff79c6">=</span>conv_name_base <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;2a&#39;</span>)
+        self<span style="color:#ff79c6">.</span>bn2a <span style="color:#ff79c6">=</span> layers<span style="color:#ff79c6">.</span>BatchNormalization(name<span style="color:#ff79c6">=</span>bn_name_base <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;2a&#39;</span>)
+        
+        <span style="color:#f1fa8c">&#34;...代码省略&#34;</span>
+        
+   	<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">call</span>(self, inputs, training<span style="color:#ff79c6">=</span>False):
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>conv2a(inputs)
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>bn2a(x, training<span style="color:#ff79c6">=</span>training)
+        x <span style="color:#ff79c6">=</span> tf<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>relu(x)
+        
+        <span style="color:#f1fa8c">&#34;...代码省略&#34;</span>
+</code></pre></div><p>这个类使用<code>__init__()</code>方法将一些Layer提供的函数引用保存在self下的变量中，并未创建不必要的有状态变量。在构建Bottleneck时的代码中若有</p>
+<p><code>res2b = _Bottleneck([64, 64, 256], block='2b')</code>， 那么<code>res2b</code>便可理解成是<code>_Bottleneck</code>返回的一个函数。</p>
+<h3 id="22--可迭代对象与生成器表达式">2.2  可迭代对象与生成器表达式</h3>
+<p>在函数式编程其中一个核心是利用纯函数做映射，规约和过滤，而无副作用的纯函数就是变量不会在全局范围发生改变的函数。简单例子如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># Imperative Programming</span>
+a <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">adjustment_I</span>():
+    <span style="color:#ff79c6">global</span> a
+    a <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+
+<span style="color:#6272a4"># Functional Programming</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">adjustment_F</span>(a):
+    <span style="color:#ff79c6">return</span> a<span style="color:#ff79c6">+</span><span style="color:#bd93f9">1</span>
+</code></pre></div><p>第一个函数<code>adjustment_I</code>就是非纯函数，它改变了函数以外的变量，也可以说这个函数是有状态的。而第二个函数<code>adjustment_F</code>是一个纯函数，其输出只与输入参数有关，不会受到其他外界变量的影响。</p>
+<p>但python的许多内置对象都带有状态，例如文件类相关的对象。在实际编程中是几乎无法避免的要去使用非纯函数，产生副作用与改变状态也是会经常发生。程序员能做的更多的是尽量解藕纯函数和非纯函数，在函数式编程与管理中间状态量之间寻求平衡。减少对有状态对象的依赖不但利于测试，而且降低了维护的成本和错误率，更能充分利用一些内置数据结构来降低资源消耗和提高效率。利用可迭代对象和生成器表达式就是这些优势的体现。</p>
+<p>for循环是我们常用的处理集合的方式，通常的用法并不遵循函数式编程的原则，而是在循环体外是用循环变量来进行显式的状态管理。但如果能将这种状态管理只用于for语句的目标迭代器对象上，那么就可以在不完全偏离纯函数式编程的原则下利用python的特性来达到平衡。因为如果放在纯粹的函数式语境中，应是通过使用递归函数来处理所有的可迭代对象，内部状态只存在于递归调用栈中，但性能会受到栈长的限制，所以for与可迭代对象的配合正好优化了递归。</p>
+<p>函数式编程其中另一个核心特征是灵活组合生成器表达式和可迭代对象来描述复杂处理流程, 这里的一个比较经典的设计模式是打包拆包:  <code>unwrap(process(wrap(iterable)))</code>。 其中更简单和具体的使用结构类似于 <code>( f(x, y) for x, y in C )</code> 或者 <code>( (x, y) for x, y in C if f(x, y) )</code>, 这里的C集合往往也是可迭代对象。这样做的优点是可以将数据输送与处理数据的逻辑分离，不需要在处理函数中使用循环来获取数据，只需要考虑如何在函数内映射单一元素。所以在处理和清洗大数据时非常简洁高效，简单实现可遵循以下步骤：</p>
+<p><strong>Step 1</strong>  构造数据源生成器</p>
+<p>比如数据的来源是一个大型文件，如XML, JSON,  CSV等序列化数据。那么就用相应的解析库来构造数据生成器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">source</span>(filename):
+	<span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(filename) <span style="color:#ff79c6">as</span> f:
+	<span style="color:#6272a4">#  以下根据不同文件类型解析</span>
+        <span style="color:#ff79c6">for</span> line <span style="color:#ff79c6">in</span> f:
+            <span style="color:#ff79c6">yield</span> <span style="color:#8be9fd;font-style:italic">int</span>(line)
+</code></pre></div><p><strong>Step 2</strong>  处理函数</p>
+<p>也可理解为转换函数。针对单一元素会构造一系列的处理转换函数来最终达到数据的清洗，每个处理函数只负责对一个元素的一种单一形式的加工转换，分离了处理逻辑。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># 处理函数 1 提取</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">process_extract</span>(one_item):
+	<span style="color:#ff79c6">pass</span>
+
+<span style="color:#6272a4"># 处理函数 2 过滤</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">process_filter</span>(one_item):
+	<span style="color:#ff79c6">pass</span>
+
+<span style="color:#6272a4"># 处理函数 3 映射</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">process_map</span>(one_item):
+	<span style="color:#ff79c6">pass</span>
+
+<span style="color:#6272a4"># 处理函数 ...</span>
+</code></pre></div><p>用匿名函数的形式来构造处理函数则更加的函数式风格。匿名函数就是没有名字的函数，采用Lambda形式。</p>
+<p><strong>Step 3</strong>  拆包映射</p>
+<p>这一步是完整化整个代码逻辑和处理流程的步骤， 也是数据与处理算法结合的步骤。大体可用三种方式实现：</p>
+<ol>
+<li>
+<p>组合生成器表达式</p>
+<p>能以简洁的方式完成流程处理</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">step_1 <span style="color:#ff79c6">=</span> ( process_extract(x) <span style="color:#ff79c6">for</span> x <span style="color:#ff79c6">in</span> source(filename) )
+step_2 <span style="color:#ff79c6">=</span> ( process_filter(x) <span style="color:#ff79c6">for</span> x <span style="color:#ff79c6">in</span> step_1 )
+step_3 <span style="color:#ff79c6">=</span> ( process_map(x) <span style="color:#ff79c6">for</span> x <span style="color:#ff79c6">in</span> step_2 )
+</code></pre></div></li>
+<li>
+<p>map函数</p>
+<p>map函数的返回结果依然是可迭代对象，可以将任何python函数应用于几何和迭代对象。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">step_1 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">map</span>(process_extract, source(filename))
+step_2 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">map</span>(process_filter, step_1)
+step_3 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">map</span>(process_map, step_2)
+</code></pre></div></li>
+<li>
+<p>高阶函数</p>
+<p>以函数为参数或者返回值的函数，比起前者略显繁琐，但可以在高阶函数之中完成一些额外对数据的过滤。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">step_1</span>(process_extract, source(filename)):
+ iterable_source <span style="color:#ff79c6">=</span> source(filename)
+ <span style="color:#8be9fd;font-style:italic">filter</span>(function, iterable_source)
+ <span style="color:#ff79c6">return</span> ( process_extract(x) <span style="color:#ff79c6">for</span> x <span style="color:#ff79c6">in</span> iterable_source )
+</code></pre></div></li>
+</ol>
+<h3 id="23--闭包与装饰器">2.3  闭包与装饰器</h3>
+<h4 id="231--闭包">2.3.1  闭包</h4>
+<p>闭包是函数式编程中的一种组织代码的语法结构，功能上和调用类对象使用<code>__call__()</code>方法类似，允许函数先和自身需要的配置或数据环境直接关联，将这些数据*(也称之为自由变量、non-local非局部变量)*储存和包裹在函数内部，然后等待此包裹被调用进行惰性求值，哪能访问到这个包裹哪里就能访问到这些自由变量, 从而也避免了使用全局变量。和写一个class相比，闭包的方式运算速度更快，因为闭包当中没有self指针，从而节省了大量的变量的访问和运算。</p>
+<p>先列一下闭包的特点：</p>
+<ol>
+<li>
+<p>必须有一个内嵌函数</p>
+</li>
+<li>
+<p>内嵌函数必须引用外部函数中的变量 (non-local)</p>
+</li>
+<li>
+<p>外部函数的返回值必须是内嵌函数</p>
+</li>
+</ol>
+<p>举一个简单例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">averager</span>():
+    series <span style="color:#ff79c6">=</span> []
+    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calc</span>(new_value):
+        series<span style="color:#ff79c6">.</span>append(new_value)
+        total <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">sum</span>(series)
+        <span style="color:#ff79c6">return</span> total<span style="color:#ff79c6">/</span><span style="color:#8be9fd;font-style:italic">len</span>(series)
+    <span style="color:#ff79c6">return</span> calc
+</code></pre></div><p>这是一个移动平均数求解器，初始化我们会将一个list列表包裹进来然后返回一个可调用对象，在调用时每次的输入都会被储存在列表里：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> avg <span style="color:#ff79c6">=</span> averager()
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> avg(<span style="color:#bd93f9">5</span>)
+<span style="color:#bd93f9">5.0</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> avg(<span style="color:#bd93f9">10</span>)
+<span style="color:#bd93f9">7.5</span>
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> avg(<span style="color:#bd93f9">6</span>)
+<span style="color:#bd93f9">7.0</span>
+</code></pre></div><p>这里对代码稍作更改，功能一致，但会引入一个闭包里值得注意的作用域问题，代码修改如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">averager</span>():
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+    total <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calc</span>(new_value):
+        count <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+        total <span style="color:#ff79c6">+=</span> new_value
+        <span style="color:#ff79c6">return</span> total <span style="color:#ff79c6">/</span> count
+    <span style="color:#ff79c6">return</span> calc
+</code></pre></div><p>按原步骤初始化和求解：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">&gt;&gt;&gt;</span> avg <span style="color:#ff79c6">=</span> averager()
+<span style="color:#ff79c6">&gt;&gt;&gt;</span> avg(<span style="color:#bd93f9">5</span>)
+Traceback (most recent call last):
+  File <span style="color:#f1fa8c">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#bd93f9">1</span>, <span style="color:#ff79c6">in</span> <span style="color:#ff79c6">&lt;</span>module<span style="color:#ff79c6">&gt;</span>
+  File <span style="color:#f1fa8c">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#bd93f9">5</span>, <span style="color:#ff79c6">in</span> calc
+UnboundLocalError: local variable <span style="color:#f1fa8c">&#39;count&#39;</span> referenced before assignment
+</code></pre></div><p>错误提示count变量在赋值前进行了引用，其实total变量也有相同的问题。这里直接说结论：对数字、字符串、元组等不可变类型来说，这些变量都是可以被内嵌函数使用的，但是不可变类型只能读取不能更新，一旦尝试更新和重新绑定 ( <code>count += 1</code>,  <code>total += new_value</code> )，就会在内嵌函数中把count或者total当作局部变量失去了闭包中的存储。而最开始的例子中列表本身为可变的对象，添加元素不会受到影响。</p>
+<p>为解决此问题，python3中引入nonlocal声明，可以将闭包中存储的不可变类型转化为自由变量进行修改，如下的更改解决了这个问题：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">averager</span>():
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+    total <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calc</span>(new_value):
+        nonlocal count, total
+        count <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+        total <span style="color:#ff79c6">+=</span> new_value
+        <span style="color:#ff79c6">return</span> total <span style="color:#ff79c6">/</span> count
+    <span style="color:#ff79c6">return</span> calc
+</code></pre></div><h4 id="232--装饰器">2.3.2  装饰器</h4>
+<p>装饰器一般用于将原始函数转化成另一种形式, 也是一种高阶函数，可以将修饰的基函数改装成添加了新功能的复合函数。往往装饰器是一次性的通用设计，可为整个应用程序或者框架添加例如日志、统计、故障处理和安全等方面的功能。从*@*的语法糖拆解便可以看出这种复合设计：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">@decorator
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">original_function</span>():
+    <span style="color:#ff79c6">pass</span>
+
+<span style="color:#6272a4">## 拆解后</span>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">original_function</span>():
+    <span style="color:#ff79c6">pass</span>
+original_function <span style="color:#ff79c6">=</span> decorator(original_function)
+</code></pre></div><p>这里主要说明的是作为高阶函数的装饰器一般的使用示例：</p>
+<ol>
+<li>输入清理，在执行基函数前的预处理步骤</li>
+<li>输出转化，在执行基函数后的后处理步骤</li>
+<li>首先尝试转换，并执行清理来应对异常，然后再次尝试转换</li>
+</ol>
+<p>下面是一个用装饰器实现的retry模块示例，可使用额外参数自定义装饰器使其功能更加复杂。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">retry</span>(attempt_limit<span style="color:#ff79c6">=</span><span style="color:#bd93f9">3</span>):
+    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">wrapper</span>(func):
+        <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">inner</span>(self, <span style="color:#ff79c6">*</span>args, <span style="color:#ff79c6">**</span>kwargs):
+            attempt_num <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+            <span style="color:#ff79c6">while</span> attempt_num <span style="color:#ff79c6">&lt;=</span> attempt_limit:
+                <span style="color:#ff79c6">try</span>:
+                    <span style="color:#ff79c6">return</span> func(self, <span style="color:#ff79c6">*</span>args, <span style="color:#ff79c6">**</span>kwargs)
+                <span style="color:#ff79c6">except</span> Exception <span style="color:#ff79c6">as</span> e:
+                    <span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#34;{} attempt failed, ErrorMesg: &lt;{}&gt;&#34;</span><span style="color:#ff79c6">.</span>format(attempt_num, e))
+                    attempt_num <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+                    time<span style="color:#ff79c6">.</span>sleep(<span style="color:#bd93f9">0.5</span>)
+            <span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#34;Retry Error&#34;</span>)
+            <span style="color:#ff79c6">return</span> None
+        <span style="color:#ff79c6">return</span> inner
+    <span style="color:#ff79c6">return</span> wrapper
+</code></pre></div><p>关于函数式编程先简单说到这里，后续会另开章节加入一些更深层的讨论。</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:defangc23@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/avatar/wechat.jpg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/defangc23">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; [ F ]ang Blog 2020
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
